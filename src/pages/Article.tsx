@@ -16,9 +16,38 @@ const mdxComponents = {
   blockquote: (props: any) => (
     <blockquote className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-600" {...props} />
   ),
-  img: (props: any) => (
-    <img className="w-full rounded-lg my-6 shadow-lg" {...props} alt={props.alt || ''} />
-  ),
+  img: (props: any) => {
+    const src = props.src.startsWith('http') ? props.src : `/images/${props.src}`;
+    return (
+      <div className="my-8">
+        <img
+          src={src}
+          alt={props.alt || ''}
+          className="w-full rounded-lg shadow-lg object-cover max-h-[600px]"
+          loading="lazy"
+        />
+        {props.alt && (
+          <p className="text-sm text-gray-500 mt-2 text-center">{props.alt}</p>
+        )}
+      </div>
+    );
+  },
+  video: (props: any) => {
+    const src = props.src.startsWith('http') ? props.src : `/videos/${props.src}`;
+    return (
+      <div className="my-8">
+        <video
+          className="w-full rounded-lg shadow-lg"
+          controls
+          preload="metadata"
+          {...props}
+          src={src}
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    );
+  },
   pre: (props: any) => (
     <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto my-4 text-sm" {...props} />
   ),
