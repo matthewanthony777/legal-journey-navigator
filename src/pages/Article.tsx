@@ -67,8 +67,12 @@ const Article = () => {
             <span>{formatDate(article.date)}</span>
             <span>•</span>
             <span>{article.author}</span>
-            <span>•</span>
-            <span>{article.readingTime}</span>
+            {article.readingTime && (
+              <>
+                <span>•</span>
+                <span>{article.readingTime}</span>
+              </>
+            )}
           </div>
         </div>
         <div className="mt-8">
@@ -76,16 +80,18 @@ const Article = () => {
             <Content />
           </MDXProvider>
         </div>
-        <div className="mt-8 flex flex-wrap gap-2">
-          {article.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+        {article.tags && article.tags.length > 0 && (
+          <div className="mt-8 flex flex-wrap gap-2">
+            {article.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </article>
     </div>
   );
