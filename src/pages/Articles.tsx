@@ -26,36 +26,66 @@ const Articles = () => {
     );
   }
 
+  const hasVideo = (content: string) => {
+    return content.includes('<video') && content.includes('mp4');
+  };
+
+  const getVideoSrc = (content: string) => {
+    const match = content.match(/src="([^"]+\.mp4)"/);
+    return match ? match[1] : null;
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-4xl font-light mb-8">Articles</h1>
       <div className="space-y-8">
         {articles?.map((article) => (
           <article key={article.slug} className="border-b border-gray-200 pb-8">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-500">{formatDate(article.date)}</span>
-                <span className="text-sm text-gray-400">•</span>
-                <span className="text-sm text-gray-500">{article.readingTime}</span>
-              </div>
-              <Link 
-                to={`/articles/${article.slug}`}
-                className="block group"
-              >
-                <h2 className="text-2xl font-medium group-hover:text-gray-600 transition-colors">
-                  {article.title}
-                </h2>
-              </Link>
-              <p className="text-gray-600">{article.description}</p>
-              <div className="flex items-center space-x-2 mt-4">
-                {article.tags.map((tag) => (
-                  <span 
-                    key={tag}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+            <div className="space-y-4">
+              {hasVideo(article.content.toString()) && (
+                <div className="aspect-video relative overflow-hidden rounded-lg bg-gray-100">
+                  <video
+                    className="w-full h-full object-cover"
+                    poster="/placeholder.svg"
+                    preload="metadata"
+                    muted
+                    loop
+                    onMouseOver={(e) => e.currentTarget.play()}
+                    onMouseOut={(e) => {
+                      e.currentTarget.pause();
+                      e.currentTarget.currentTime = 0;
+                    }}
                   >
-                    {tag}
-                  </span>
-                ))}
+                    <source src={getVideoSrc(article.content.toString())} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              )}
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-500">{formatDate(article.date)}</span>
+                  <span className="text-sm text-gray-400">•</span>
+                  <span className="text-sm text-gray-500">{article.readingTime}</span>
+                </div>
+                <Link 
+                  to={`/articles/${article.slug}`}
+                  className="block group"
+                >
+                  <h2 className="text-2xl font-medium group-hover:text-gray-600 transition-colors">
+                    {article.title}
+                  </h2>
+                </Link>
+                <p className="text-gray-600">{article.description}</p>
+                <div className="flex items-center space-x-2 mt-4">
+                  {article.tags.map((tag) => (
+                    <span 
+                      key={tag}
+                      className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </article>
