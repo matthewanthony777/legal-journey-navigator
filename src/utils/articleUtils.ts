@@ -12,7 +12,7 @@ export const getAllArticles = async (): Promise<Article[]> => {
   const articles = import.meta.glob('/content/articles/*.mdx', { eager: true });
   return Object.values(articles)
     .map((article: any) => ({
-      ...article.frontmatter,
+      ...article.metadata,
       content: article.default
     }))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -22,7 +22,7 @@ export const getAllCareerInsights = async (): Promise<Article[]> => {
   const insights = import.meta.glob('/content/career-insights/*.mdx', { eager: true });
   return Object.values(insights)
     .map((insight: any) => ({
-      ...insight.frontmatter,
+      ...insight.metadata,
       content: insight.default
     }))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
