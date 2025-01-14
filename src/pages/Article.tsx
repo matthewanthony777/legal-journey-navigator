@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getArticleBySlug, formatDate } from '../utils/articleUtils';
 import { MDXProvider } from '@mdx-js/react';
+import * as runtime from 'react/jsx-runtime';
 
 const components = {
   h1: (props: any) => <h1 className="text-4xl font-bold mb-6 mt-8" {...props} />,
@@ -18,17 +19,17 @@ const components = {
   img: (props: any) => (
     <img className="w-full rounded-lg my-6 shadow-lg" {...props} alt={props.alt || ''} />
   ),
-  video: (props: any) => (
-    <div className="my-6">
-      <video className="w-full rounded-lg shadow-lg" {...props} />
-    </div>
-  ),
   pre: (props: any) => (
     <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto my-4 text-sm" {...props} />
   ),
-  code: (props: any) => (
-    <code className="bg-gray-100 px-2 py-1 rounded text-sm" {...props} />
-  ),
+  code: (props: any) => {
+    const isInline = typeof props.children === 'string';
+    return isInline ? (
+      <code className="bg-gray-100 px-2 py-1 rounded text-sm" {...props} />
+    ) : (
+      <code {...props} />
+    );
+  },
 };
 
 const Article = () => {
@@ -77,7 +78,7 @@ const Article = () => {
         </div>
         <div className="mt-8">
           <MDXProvider components={components}>
-            <Content />
+            <Content components={components} />
           </MDXProvider>
         </div>
         {article.tags && article.tags.length > 0 && (
