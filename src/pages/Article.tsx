@@ -5,7 +5,7 @@ import { getArticleBySlug, formatDate } from '../utils/articleUtils';
 import { MDXProvider } from '@mdx-js/react';
 import * as runtime from 'react/jsx-runtime';
 
-const components = {
+const mdxComponents = {
   h1: (props: any) => <h1 className="text-4xl font-bold mb-6 mt-8" {...props} />,
   h2: (props: any) => <h2 className="text-3xl font-semibold mt-8 mb-4" {...props} />,
   h3: (props: any) => <h3 className="text-2xl font-semibold mt-6 mb-3" {...props} />,
@@ -77,8 +77,8 @@ const Article = () => {
           </div>
         </div>
         <div className="mt-8">
-          <MDXProvider components={components}>
-            <Content components={components} />
+          <MDXProvider components={mdxComponents}>
+            <Content />
           </MDXProvider>
         </div>
         {article.tags && article.tags.length > 0 && (

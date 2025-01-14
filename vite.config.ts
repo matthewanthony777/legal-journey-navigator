@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     mdx({
-      jsxRuntime: 'react',
+      jsxRuntime: 'automatic',
       providerImportSource: "@mdx-js/react",
     }),
     react(),
