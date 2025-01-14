@@ -2,6 +2,28 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getArticleBySlug, formatDate } from '../utils/articleUtils';
+import { MDXProvider } from '@mdx-js/react';
+
+const components = {
+  h1: (props: any) => <h1 className="text-4xl font-bold mb-6" {...props} />,
+  h2: (props: any) => <h2 className="text-3xl font-semibold mt-8 mb-4" {...props} />,
+  h3: (props: any) => <h3 className="text-2xl font-semibold mt-6 mb-3" {...props} />,
+  p: (props: any) => <p className="mb-4 leading-relaxed" {...props} />,
+  ul: (props: any) => <ul className="list-disc list-inside mb-4 ml-4" {...props} />,
+  ol: (props: any) => <ol className="list-decimal list-inside mb-4 ml-4" {...props} />,
+  li: (props: any) => <li className="mb-2" {...props} />,
+  blockquote: (props: any) => (
+    <blockquote className="border-l-4 border-gray-300 pl-4 italic my-4" {...props} />
+  ),
+  img: (props: any) => (
+    <img className="w-full rounded-lg my-6" {...props} alt={props.alt || ''} />
+  ),
+  video: (props: any) => (
+    <div className="my-6">
+      <video className="w-full rounded-lg" {...props} />
+    </div>
+  ),
+};
 
 const Article = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -42,8 +64,9 @@ const Article = () => {
           </div>
         </div>
         <div className="mt-8">
-          {/* This is where the MDX content will be rendered */}
-          <div className="prose">{article.content}</div>
+          <MDXProvider components={components}>
+            {article.content}
+          </MDXProvider>
         </div>
         <div className="mt-8 flex flex-wrap gap-2">
           {article.tags.map((tag) => (
