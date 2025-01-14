@@ -9,21 +9,33 @@ export const formatDate = (date: string) => {
 };
 
 export const getAllArticles = async (): Promise<Article[]> => {
-  const articles = import.meta.glob('/content/articles/*.mdx', { eager: true });
-  return Object.values(articles)
-    .map((article: any) => ({
-      ...article.metadata,
-      content: article.default
+  // Using explicit path to content/articles directory
+  const articles = import.meta.glob('/content/articles/*.mdx', { 
+    eager: true,
+    import: 'default'
+  });
+  
+  return Object.entries(articles)
+    .map(([path, module]: [string, any]) => ({
+      ...module.metadata,
+      content: module.default,
+      slug: path.split('/').pop()?.replace('.mdx', '') || ''
     }))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
 
 export const getAllCareerInsights = async (): Promise<Article[]> => {
-  const insights = import.meta.glob('/content/career-insights/*.mdx', { eager: true });
-  return Object.values(insights)
-    .map((insight: any) => ({
-      ...insight.metadata,
-      content: insight.default
+  // Using explicit path to content/career-insights directory
+  const insights = import.meta.glob('/content/career-insights/*.mdx', {
+    eager: true,
+    import: 'default'
+  });
+  
+  return Object.entries(insights)
+    .map(([path, module]: [string, any]) => ({
+      ...module.metadata,
+      content: module.default,
+      slug: path.split('/').pop()?.replace('.mdx', '') || ''
     }))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
