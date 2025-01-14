@@ -23,6 +23,12 @@ const components = {
       <video className="w-full rounded-lg" {...props} />
     </div>
   ),
+  pre: (props: any) => (
+    <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto my-4" {...props} />
+  ),
+  code: (props: any) => (
+    <code className="bg-gray-100 px-2 py-1 rounded" {...props} />
+  ),
 };
 
 const Article = () => {
