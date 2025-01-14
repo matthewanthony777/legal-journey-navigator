@@ -26,15 +26,6 @@ const Articles = () => {
     );
   }
 
-  const hasVideo = (content: string) => {
-    return content.includes('<video') && content.includes('mp4');
-  };
-
-  const getVideoSrc = (content: string) => {
-    const match = content.match(/src="([^"]+\.mp4)"/);
-    return match ? match[1] : null;
-  };
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-4xl font-light mb-8">Articles</h1>
@@ -42,11 +33,11 @@ const Articles = () => {
         {articles?.map((article) => (
           <article key={article.slug} className="border-b border-gray-200 pb-8">
             <div className="space-y-4">
-              {hasVideo(article.content.toString()) && (
+              {article.coverVideo && (
                 <div className="aspect-video relative overflow-hidden rounded-lg bg-gray-100">
                   <video
                     className="w-full h-full object-cover"
-                    poster="/placeholder.svg"
+                    poster={article.videoPoster || "/placeholder.svg"}
                     preload="metadata"
                     muted
                     loop
@@ -56,9 +47,19 @@ const Articles = () => {
                       e.currentTarget.currentTime = 0;
                     }}
                   >
-                    <source src={getVideoSrc(article.content.toString())} type="video/mp4" />
+                    <source src={article.coverVideo} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
+                </div>
+              )}
+              {!article.coverVideo && article.coverImage && (
+                <div className="aspect-video relative overflow-hidden rounded-lg bg-gray-100">
+                  <img
+                    src={article.coverImage}
+                    alt={article.imageAlt || article.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
               )}
               <div className="space-y-2">

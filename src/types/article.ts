@@ -8,6 +8,10 @@ export interface ArticleMetadata {
   slug: string;
   featured?: boolean;
   readingTime?: string;
+  coverVideo?: string;
+  coverImage?: string;
+  imageAlt?: string;
+  videoPoster?: string;
 }
 
 export interface Article extends ArticleMetadata {
