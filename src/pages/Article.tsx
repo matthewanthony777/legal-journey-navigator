@@ -50,6 +50,8 @@ const Article = () => {
     );
   }
 
+  const Content = article.content;
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <article className="prose lg:prose-xl">
@@ -65,7 +67,7 @@ const Article = () => {
         </div>
         <div className="mt-8">
           <MDXProvider components={components}>
-            {article.content}
+            <Content />
           </MDXProvider>
         </div>
         <div className="mt-8 flex flex-wrap gap-2">
