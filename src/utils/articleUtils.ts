@@ -1,36 +1,36 @@
-import { format, parseISO } from 'date-fns';
-import type { Article, ArticleMetadata } from '../types/article';
+import { Article } from '../types/article';
 
-// Mock function to load articles - replace with actual MDX loading logic
-export async function getAllArticles(): Promise<Article[]> {
-  // This is where you'll implement the actual MDX loading
-  // For now, returning a mock article
-  return [
-    {
-      title: "Sample Legal Article",
-      date: "2024-03-19",
-      author: "Jane Doe",
-      description: "A sample legal article about contract law",
-      tags: ["legal", "contracts"],
-      category: "legal",
-      slug: "sample-legal-article",
-      content: "Sample content",
-      readingTime: "5 min read"
-    }
-  ];
-}
+export const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
 
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+export const getAllArticles = async (): Promise<Article[]> => {
+  const articles = import.meta.glob('/content/articles/*.mdx', { eager: true });
+  return Object.values(articles)
+    .map((article: any) => ({
+      ...article.frontmatter,
+      content: article.default
+    }))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+};
+
+export const getAllCareerInsights = async (): Promise<Article[]> => {
+  const insights = import.meta.glob('/content/career-insights/*.mdx', { eager: true });
+  return Object.values(insights)
+    .map((insight: any) => ({
+      ...insight.frontmatter,
+      content: insight.default
+    }))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+};
+
+export const getArticleBySlug = async (slug: string): Promise<Article | null> => {
   const articles = await getAllArticles();
-  return articles.find(article => article.slug === slug) || null;
-}
-
-export function sortArticlesByDate(articles: Article[]): Article[] {
-  return [...articles].sort((a, b) => 
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-}
-
-export function formatDate(date: string): string {
-  return format(parseISO(date), 'MMMM dd, yyyy');
-}
+  const insights = await getAllCareerInsights();
+  const allContent = [...articles, ...insights];
+  return allContent.find(article => article.slug === slug) || null;
+};

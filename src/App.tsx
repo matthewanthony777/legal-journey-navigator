@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Articles from "./pages/Articles";
 import Article from "./pages/Article";
+import CareerInsights from "./pages/CareerInsights";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/articles/:slug" element={<Article />} />
+          <Route path="/career-insights" element={<CareerInsights />} />
+          <Route path="/career-insights/:slug" element={<Article />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
