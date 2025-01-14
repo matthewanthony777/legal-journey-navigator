@@ -1,43 +1,79 @@
 import { Article } from '../types/article';
 
 export const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  try {
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      console.error('Invalid date format:', date);
+      return 'Date unavailable';
+    }
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return 'Date unavailable';
+  }
 };
 
 export const getAllArticles = async (): Promise<Article[]> => {
-  // Using explicit path to content/articles directory
-  const articles = import.meta.glob('/content/articles/*.mdx', { 
-    eager: true,
-    import: 'default'
-  });
-  
-  return Object.entries(articles)
-    .map(([path, module]: [string, any]) => ({
-      ...module.metadata,
-      content: module.default,
-      slug: path.split('/').pop()?.replace('.mdx', '') || ''
-    }))
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  try {
+    const articles = import.meta.glob('/content/articles/*.mdx', { 
+      eager: true,
+      import: 'default'
+    });
+    
+    return Object.entries(articles)
+      .map(([path, module]: [string, any]) => {
+        if (!module?.metadata) {
+          console.warn(`Missing metadata for article at path: ${path}`);
+          return null;
+        }
+        
+        return {
+          ...module.metadata,
+          content: module.default,
+          slug: path.split('/').pop()?.replace('.mdx', '') || '',
+          date: module.metadata.date || new Date().toISOString() // Fallback date
+        };
+      })
+      .filter((article): article is Article => article !== null)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  } catch (error) {
+    console.error('Error loading articles:', error);
+    return [];
+  }
 };
 
 export const getAllCareerInsights = async (): Promise<Article[]> => {
-  // Using explicit path to content/career-insights directory
-  const insights = import.meta.glob('/content/career-insights/*.mdx', {
-    eager: true,
-    import: 'default'
-  });
-  
-  return Object.entries(insights)
-    .map(([path, module]: [string, any]) => ({
-      ...module.metadata,
-      content: module.default,
-      slug: path.split('/').pop()?.replace('.mdx', '') || ''
-    }))
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  try {
+    const insights = import.meta.glob('/content/career-insights/*.mdx', {
+      eager: true,
+      import: 'default'
+    });
+    
+    return Object.entries(insights)
+      .map(([path, module]: [string, any]) => {
+        if (!module?.metadata) {
+          console.warn(`Missing metadata for career insight at path: ${path}`);
+          return null;
+        }
+        
+        return {
+          ...module.metadata,
+          content: module.default,
+          slug: path.split('/').pop()?.replace('.mdx', '') || '',
+          date: module.metadata.date || new Date().toISOString() // Fallback date
+        };
+      })
+      .filter((insight): insight is Article => insight !== null)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  } catch (error) {
+    console.error('Error loading career insights:', error);
+    return [];
+  }
 };
 
 export const getArticleBySlug = async (slug: string): Promise<Article | null> => {
