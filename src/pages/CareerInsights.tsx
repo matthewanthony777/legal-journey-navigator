@@ -46,16 +46,18 @@ const CareerInsights = () => {
                 </h2>
               </Link>
               <p className="text-gray-600">{insight.description}</p>
-              <div className="flex items-center space-x-2 mt-4">
-                {insight.tags.map((tag) => (
-                  <span 
-                    key={tag}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              {insight.tags && insight.tags.length > 0 && (
+                <div className="flex items-center space-x-2 mt-4">
+                  {insight.tags.map((tag) => (
+                    <span 
+                      key={tag}
+                      className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </article>
         ))}
