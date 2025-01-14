@@ -76,16 +76,18 @@ const Articles = () => {
                   </h2>
                 </Link>
                 <p className="text-gray-600">{article.description}</p>
-                <div className="flex items-center space-x-2 mt-4">
-                  {article.tags.map((tag) => (
-                    <span 
-                      key={tag}
-                      className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {article.tags && article.tags.length > 0 && (
+                  <div className="flex items-center space-x-2 mt-4">
+                    {article.tags.map((tag) => (
+                      <span 
+                        key={tag}
+                        className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </article>
