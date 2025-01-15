@@ -21,7 +21,8 @@ export const formatDate = (date: string) => {
 export const getAllArticles = async (): Promise<Article[]> => {
   try {
     const articles = import.meta.glob('/content/articles/*.mdx', { 
-      eager: true 
+      eager: true,
+      import: 'default'
     });
     
     return Object.entries(articles)
@@ -33,7 +34,7 @@ export const getAllArticles = async (): Promise<Article[]> => {
         
         return {
           ...module.metadata,
-          content: module.default,
+          content: module,
           slug: module.metadata.slug || path.split('/').pop()?.replace('.mdx', '') || '',
           date: module.metadata.date || new Date().toISOString()
         };
@@ -49,7 +50,8 @@ export const getAllArticles = async (): Promise<Article[]> => {
 export const getAllCareerInsights = async (): Promise<Article[]> => {
   try {
     const insights = import.meta.glob('/content/career-insights/*.mdx', {
-      eager: true
+      eager: true,
+      import: 'default'
     });
     
     return Object.entries(insights)
@@ -61,7 +63,7 @@ export const getAllCareerInsights = async (): Promise<Article[]> => {
         
         return {
           ...module.metadata,
-          content: module.default,
+          content: module,
           slug: module.metadata.slug || path.split('/').pop()?.replace('.mdx', '') || '',
           date: module.metadata.date || new Date().toISOString()
         };
