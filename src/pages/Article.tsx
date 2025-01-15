@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getArticleBySlug, formatDate } from '../utils/articleUtils';
 import { MDXProvider } from '@mdx-js/react';
@@ -64,6 +64,8 @@ const mdxComponents = {
 
 const Article = () => {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const isCareerInsight = location.pathname.includes('career-insights');
   
   const { data: article, isLoading, error } = useQuery({
     queryKey: ['article', slug],
@@ -92,10 +94,10 @@ const Article = () => {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <Link to="/articles">
+        <Link to={isCareerInsight ? "/career-insights" : "/articles"}>
           <Button variant="ghost" className="mb-6">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Articles
+            Back to {isCareerInsight ? "Career Insights" : "Articles"}
           </Button>
         </Link>
       </div>
