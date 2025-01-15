@@ -32,10 +32,13 @@ const Articles = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles?.map((article) => (
           <article key={article.slug} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
-            <div className="aspect-video relative overflow-hidden bg-gray-100 h-48">
+            <Link 
+              to={`/articles/${article.slug}`}
+              className="block aspect-video relative overflow-hidden bg-gray-100"
+            >
               {article.coverVideo && (
                 <video
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   poster={article.videoPoster || "/placeholder.svg"}
                   preload="metadata"
                   muted
@@ -54,11 +57,11 @@ const Articles = () => {
                 <img
                   src={article.coverImage}
                   alt={article.imageAlt || article.title}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
                 />
               )}
-            </div>
+            </Link>
             <div className="p-4">
               <div className="space-y-2">
                 <div className="flex items-center space-x-2 text-sm text-gray-500">
