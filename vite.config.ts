@@ -11,10 +11,14 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     mdx({
-      jsxRuntime: 'automatic',
+      jsxImportSource: "react",
+      jsxRuntime: "automatic",
       providerImportSource: "@mdx-js/react",
+      development: mode === "development",
     }),
-    react(),
+    react({
+      jsxImportSource: "react",
+    }),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
