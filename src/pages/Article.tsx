@@ -116,11 +116,9 @@ const Article = () => {
             )}
           </div>
         </div>
-        <div className="mt-8">
-          <MDXProvider components={mdxComponents}>
-            <Content />
-          </MDXProvider>
-        </div>
+        <MDXProvider components={mdxComponents}>
+          <Content />
+        </MDXProvider>
         {article.tags && article.tags.length > 0 && (
           <div className="mt-8 flex flex-wrap gap-2">
             {article.tags.map((tag) => (
