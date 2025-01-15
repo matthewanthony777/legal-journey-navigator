@@ -26,17 +26,16 @@ export const getAllArticles = async (): Promise<Article[]> => {
     
     return Object.entries(articles)
       .map(([path, module]: [string, any]) => {
-        const metadata = module.frontmatter || module.metadata;
-        if (!metadata) {
+        if (!module?.metadata) {
           console.warn(`Missing metadata for article at path: ${path}`);
           return null;
         }
         
         return {
-          ...metadata,
+          ...module.metadata,
           content: module.default,
-          slug: metadata.slug || path.split('/').pop()?.replace('.mdx', '') || '',
-          date: metadata.date || new Date().toISOString()
+          slug: module.metadata.slug || path.split('/').pop()?.replace('.mdx', '') || '',
+          date: module.metadata.date || new Date().toISOString()
         };
       })
       .filter((article): article is Article => article !== null)
@@ -55,17 +54,16 @@ export const getAllCareerInsights = async (): Promise<Article[]> => {
     
     return Object.entries(insights)
       .map(([path, module]: [string, any]) => {
-        const metadata = module.frontmatter || module.metadata;
-        if (!metadata) {
+        if (!module?.metadata) {
           console.warn(`Missing metadata for career insight at path: ${path}`);
           return null;
         }
         
         return {
-          ...metadata,
+          ...module.metadata,
           content: module.default,
-          slug: metadata.slug || path.split('/').pop()?.replace('.mdx', '') || '',
-          date: metadata.date || new Date().toISOString()
+          slug: module.metadata.slug || path.split('/').pop()?.replace('.mdx', '') || '',
+          date: module.metadata.date || new Date().toISOString()
         };
       })
       .filter((insight): insight is Article => insight !== null)
