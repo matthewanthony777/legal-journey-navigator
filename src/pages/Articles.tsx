@@ -43,11 +43,8 @@ const Articles = () => {
                   preload="metadata"
                   muted
                   loop
-                  onMouseOver={(e) => e.currentTarget.play()}
-                  onMouseOut={(e) => {
-                    e.currentTarget.pause();
-                    e.currentTarget.currentTime = 0;
-                  }}
+                  autoPlay
+                  playsInline
                 >
                   <source src={article.coverVideo} type="video/mp4" />
                   Your browser does not support the video tag.
