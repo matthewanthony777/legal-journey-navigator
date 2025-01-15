@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { getAllCareerInsights, formatDate } from '../utils/articleUtils';
-import Navigation from '../components/Navigation';
 
 const CareerInsights = () => {
   const { data: insights, isLoading, error } = useQuery({
@@ -12,55 +11,75 @@ const CareerInsights = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen">
-        <Navigation />
-        <div className="flex items-center justify-center h-[calc(100vh-80px)]">
-          <div className="animate-pulse text-xl">Loading career insights...</div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-xl">Loading career insights...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen">
-        <Navigation />
-        <div className="flex items-center justify-center h-[calc(100vh-80px)]">
-          <div className="text-red-500">Error loading career insights</div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-500">Error loading career insights</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
-      <Navigation />
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-light mb-8">Career Insights</h1>
-        <div className="space-y-8">
-          {insights?.map((insight) => (
-            <article key={insight.slug} className="border-b border-gray-200 dark:border-gray-800 pb-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-4xl font-light mb-8">Career Insights</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {insights?.map((insight) => (
+          <article key={insight.slug} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+            <Link 
+              to={`/career-insights/${insight.slug}`}
+              className="block aspect-video relative overflow-hidden bg-gray-100"
+            >
+              {insight.coverVideo && (
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  poster={insight.videoPoster || "/placeholder.svg"}
+                  preload="metadata"
+                  muted
+                  loop
+                  autoPlay
+                  playsInline
+                >
+                  <source src={insight.coverVideo} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
+              {!insight.coverVideo && insight.coverImage && (
+                <img
+                  src={insight.coverImage}
+                  alt={insight.imageAlt || insight.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
+              )}
+            </Link>
+            <div className="p-4">
               <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{formatDate(insight.date)}</span>
-                  <span className="text-sm text-gray-400 dark:text-gray-600">•</span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{insight.readingTime}</span>
+                <div className="flex items-center space-x-2 text-sm text-gray-500">
+                  <span>{formatDate(insight.date)}</span>
+                  <span>•</span>
+                  <span>{insight.readingTime}</span>
                 </div>
                 <Link 
                   to={`/career-insights/${insight.slug}`}
                   className="block group"
                 >
-                  <h2 className="text-2xl font-medium group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+                  <h2 className="text-xl font-medium group-hover:text-gray-600 transition-colors line-clamp-2">
                     {insight.title}
                   </h2>
                 </Link>
-                <p className="text-gray-600 dark:text-gray-300">{insight.description}</p>
+                <p className="text-gray-600 line-clamp-2">{insight.description}</p>
                 {insight.tags && insight.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-4">
                     {insight.tags.map((tag) => (
                       <span 
                         key={tag}
-                        className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm"
+                        className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
                       >
                         {tag}
                       </span>
@@ -68,9 +87,9 @@ const CareerInsights = () => {
                   </div>
                 )}
               </div>
-            </article>
-          ))}
-        </div>
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   );
