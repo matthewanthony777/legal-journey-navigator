@@ -12,7 +12,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     mdx({
       jsxImportSource: "react",
-      jsxRuntime: "automatic",
       providerImportSource: "@mdx-js/react",
       development: mode === "development",
     }),
@@ -29,8 +28,5 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react/jsx-runtime'],
-  },
-  esbuild: {
-    jsxInject: `import React from 'react'`,
   },
 }));
