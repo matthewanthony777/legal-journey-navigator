@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Articles from "./pages/Articles";
 import Article from "./pages/Article";
 import CareerInsights from "./pages/CareerInsights";
+import Navigation from "./components/Navigation";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <Navigation />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/articles" element={<Articles />} />
