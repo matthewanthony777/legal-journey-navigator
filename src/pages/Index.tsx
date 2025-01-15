@@ -1,9 +1,6 @@
-import Navigation from "../components/Navigation";
-
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
-      <Navigation />
       <div className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-5xl font-bold mb-8">Legal Commentary & Career Insights</h1>
         <p className="text-xl text-gray-600 mb-8">
