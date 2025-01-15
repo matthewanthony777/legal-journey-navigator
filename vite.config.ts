@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => ({
     }),
     react({
       jsxImportSource: "react",
+      jsxRuntime: "automatic",
     }),
     mode === 'development' &&
     componentTagger(),
@@ -26,5 +27,11 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  optimizeDeps: {
+    include: ['react/jsx-runtime'],
+  },
+  esbuild: {
+    jsxInject: `import React from 'react'`,
   },
 }));
