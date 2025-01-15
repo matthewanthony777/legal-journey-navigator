@@ -41,8 +41,16 @@ const mdxComponents = {
           className="w-full rounded-lg shadow-lg"
           controls
           preload="metadata"
+          playsInline
           {...props}
           src={src}
+          onLoadStart={(e) => {
+            const video = e.currentTarget;
+            video.playbackRate = 1.0; // Ensure smooth playback
+            if (video.readyState >= 2) {
+              video.play().catch(() => {}); // Attempt autoplay if metadata is loaded
+            }
+          }}
         >
           Your browser does not support the video tag.
         </video>
