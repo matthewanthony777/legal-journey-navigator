@@ -28,8 +28,5 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react/jsx-runtime', '@mdx-js/react'],
-  },
-  esbuild: {
-    jsxInject: `import React from 'react'`,
-  },
+  }
 }));
